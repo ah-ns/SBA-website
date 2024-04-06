@@ -106,13 +106,33 @@
             </div>
         </div>
     </div>
-    <div class = "standings">
-
+    <div class = "standings", id="leaderboard">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2>
+                Current Leaderboard
+                </h2>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                        Rank
+                        </th>
+                        <th>
+                        Name
+                        </th>
+                        <th>
+                        Score
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="leaderboardTableBody">
+                    <!-- Leaderboard data will be dynamically added here -->
+                    </tbody>
+                </table>
+             </div>
+        </div>
     </div>
-    <script src="jquery.js">
-    </script>
-    <script src="script.js" defer>
-    </script>
     <script src="./jquery.js">
     </script>
     <script src="./script.js" defer>
