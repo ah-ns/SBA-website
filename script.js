@@ -13,6 +13,27 @@ $(function() {
       { name: "j", score: 35, rankChange: 0 }
   ];
 
+  // Sorts the teams by score and keeps track of initial rank
+  function insertionSort() {
+    const initialRanks = {};
+    for (let i = 0; i < leaderboardData.length; i++) {
+      initialRanks[leaderboardData[i].name] = i + 1;
+    }
+    
+    for (let i = 1; i < leaderboardData.length; i++) {
+      let temp = leaderboardData[i];
+      let j = i - 1;
+      for (j; j >= 0 && temp.score > leaderboardData[j].score; j--) {
+        leaderboardData[j+1] = leaderboardData[j];
+      }
+      leaderboardData[j+1] = temp;
+    }
+
+    for (let i = 0; i < leaderboardData.length; i++) {
+      leaderboardData[i].rankChange = initialRanks[leaderboardData[i].name] - (i+1);
+    }
+  }
+
   // Function to update the leaderboard table
   function updateLeaderboard() {
       var leaderboardTableBody = $("#leaderboardTableBody");
@@ -20,7 +41,7 @@ $(function() {
 
       for (var i = 0; i < leaderboardData.length; i++) {
           var row = $("<tr>");
-          row.append($("<td>").text(i + 1 + " (" + leaderboardData[i].rankChange + ")"));
+          row.append($("<td>").text((i + 1) + " (" + leaderboardData[i].rankChange + ")"));
           row.append($("<td>").text(leaderboardData[i].name));
           row.append($("<td>").text(leaderboardData[i].score));
           leaderboardTableBody.append(row);
@@ -38,7 +59,7 @@ $(function() {
       }
 
       // Sort leaderboard data by score in descending order
-      leaderboardData.sort((a, b) => b.score - a.score);
+      insertionSort();
 
       // Update the leaderboard table
       updateLeaderboard();
