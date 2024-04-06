@@ -96,5 +96,5 @@ $(function() {
 
       // Update the leaderboard table
       updateLeaderboard();
-  }, 5000); // Change the interval time as needed
+  }, 1000000); // Change the interval time as needed
 });

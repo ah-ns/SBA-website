@@ -215,6 +215,17 @@ header {
   flex-direction:row;
   width:60%;
 }
+.edit-btns button{
+  margin:4%;
+  padding:3%;
+}
+
+/*------------------------------------------------editing----------------------------------------*/
+.arrow-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 
 /* ---------------------RESPONSIVE DESIGN--------------------- */
@@ -230,10 +241,6 @@ header {
 
   .edit-btns{
     width:100%
-  }
-  .edit-btns button{
-    margin:4%;
-    padding:5px;
   }
 }
 
