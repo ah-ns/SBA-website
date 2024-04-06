@@ -1,49 +1,71 @@
 $(function() {
   // Sample leaderboard data
-  var leaderboardData = [
-      { name: "a", score: 100, rankChange: 0 },
-      { name: "b", score: 99, rankChange: 0 },
-      { name: "c", score: 95, rankChange: 0 },
-      { name: "d", score: 70, rankChange: 0 },
-      { name: "e", score: 60, rankChange: 0 },
-      { name: "f", score: 50, rankChange: 0 },
-      { name: "g", score: 28, rankChange: 0 },
-      { name: "h", score: 57, rankChange: 0 },
-      { name: "i", score: 90, rankChange: 0 },
-      { name: "j", score: 35, rankChange: 0 }
+  var teamData = [
+      { name: "a", wins: 100, losses: 1, pointsAllowed: 10, rankChange: 0 },
+      { name: "b", wins: 100, losses: 1, pointsAllowed: 9, rankChange: 0 },
+      { name: "c", wins: 50, losses: 1, pointsAllowed: 9, rankChange: 0 },
+      { name: "d", wins: 100, losses: 2, pointsAllowed: 9, rankChange: 0 },
+      { name: "e", wins: 60, losses: 1, pointsAllowed: 9, rankChange: 0 },
+      { name: "f", wins: 50, losses: 1, pointsAllowed: 9, rankChange: 0 },
+      { name: "g", wins: 28, losses: 1, pointsAllowed: 9, rankChange: 0 },
+      { name: "h", wins: 57, losses: 1, pointsAllowed: 9, rankChange: 0 },
+      { name: "i", wins: 90, losses: 1, pointsAllowed: 9, rankChange: 0 },
+      { name: "j", wins: 35, losses: 1, pointsAllowed: 9, rankChange: 0 }
   ];
 
-  // Sorts the teams by score and keeps track of initial rank
+  // Sorts the teams by wins and keeps track of initial rank
   function insertionSort() {
     const initialRanks = {};
-    for (let i = 0; i < leaderboardData.length; i++) {
-      initialRanks[leaderboardData[i].name] = i + 1;
+    for (let i = 0; i < teamData.length; i++) {
+      initialRanks[teamData[i].name] = i + 1;
     }
     
-    for (let i = 1; i < leaderboardData.length; i++) {
-      let temp = leaderboardData[i];
+    for (let i = 1; i < teamData.length; i++) {
+      let temp = teamData[i];
       let j = i - 1;
-      for (j; j >= 0 && temp.score > leaderboardData[j].score; j--) {
-        leaderboardData[j+1] = leaderboardData[j];
+      for (j; j >= 0 && compareStats(temp, teamData[j]); j--) {
+        teamData[j+1] = teamData[j];
       }
-      leaderboardData[j+1] = temp;
+      teamData[j+1] = temp;
     }
 
-    for (let i = 0; i < leaderboardData.length; i++) {
-      leaderboardData[i].rankChange = initialRanks[leaderboardData[i].name] - (i+1);
+    for (let i = 0; i < teamData.length; i++) {
+      teamData[i].rankChange = initialRanks[teamData[i].name] - (i+1);
     }
   }
+
+  // Compares the stats of two teams
+  function compareStats(team1, team2) {
+    let result = false;
+
+    let team1WinPercent = team1.wins / (team1.wins + team1.losses);
+    let team2WinPercent = team2.wins / (team2.wins + team2.losses);
+
+    if (team1WinPercent > team2WinPercent) {
+        result = true;
+    } else if (team1WinPercent == team2WinPercent) {
+        if (team1.wins > team2.wins) {
+            result = true;
+        } else if (team1.wins == team2.wins) {
+            result = team1.pointsAllowed < team2.pointsAllowed;
+        }
+    }
+
+    return result;
+  } 
 
   // Function to update the leaderboard table
   function updateLeaderboard() {
       var leaderboardTableBody = $("#leaderboardTableBody");
       leaderboardTableBody.empty();
 
-      for (var i = 0; i < leaderboardData.length; i++) {
+      for (var i = 0; i < teamData.length; i++) {
           var row = $("<tr>");
-          row.append($("<td>").text((i + 1) + " (" + leaderboardData[i].rankChange + ")"));
-          row.append($("<td>").text(leaderboardData[i].name));
-          row.append($("<td>").text(leaderboardData[i].score));
+          row.append($("<td>").text((i + 1) + " (" + teamData[i].rankChange + ")"));
+          row.append($("<td>").text(teamData[i].name));
+          row.append($("<td>").text(teamData[i].wins));
+          row.append($("<td>").text(teamData[i].losses));
+          row.append($("<td>").text(teamData[i].pointsAllowed));
           leaderboardTableBody.append(row);
       }
   }
@@ -53,12 +75,12 @@ $(function() {
 
   // Simulate live updates every 5 seconds
   setInterval(function() {
-      // Randomly update scores
-      for (var i = 0; i < leaderboardData.length; i++) {
-          leaderboardData[i].score += Math.floor(Math.random() * 10) + 1;
-      }
+      // Randomly update wins
+    //   for (var i = 0; i < teamData.length; i++) {
+    //       teamData[i].wins += Math.floor(Math.random() * 10) + 1;
+    //   }
 
-      // Sort leaderboard data by score in descending order
+      // Sort leaderboard data by wins in descending order
       insertionSort();
 
       // Update the leaderboard table
