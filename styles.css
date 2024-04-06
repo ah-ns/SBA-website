@@ -202,14 +202,22 @@ header {
   padding-left:20px;
 }
 
-#savebutton{
-  margin-top:50px;
-  background-color:rgb(214, 107, 214);
-  width:20%;
-  font-size:35px;
-  padding:10px;
+.edit-btns{
+  margin-top:35px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:row;
+  width:60%;
 }
-#savebutton:hover{
+.edit-btns button{
+  background-color:rgb(214, 107, 214);
+  font-size:35px;
+  padding:15px;
+  margin:0 20px;
+  text-align:center;
+}
+.edit-btns button:hover{
   background-color:rgb(239, 149, 239);
   border:none;
 }
