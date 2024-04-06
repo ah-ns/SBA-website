@@ -49,5 +49,17 @@ saveButton.addEventListener('click', function() {
         const lastCell = row.querySelector('td:last-child');
         const inputField = lastCell.querySelector('input');
         lastCell.textContent = inputField.value; // Set last cell content to input value
+
+        // Clear second to last and third to last cell content
+        const secondToLastCell = row.querySelectorAll('td')[row.cells.length - 2];
+        const thirdToLastCell = row.querySelectorAll('td')[row.cells.length - 3];
+        secondToLastCell.textContent = secondToLastCell.textContent; // Maintain existing content
+        thirdToLastCell.textContent = thirdToLastCell.textContent; // Maintain existing content
+
+        // Remove the arrows
+        const arrows = row.querySelectorAll('.fas');
+        arrows.forEach(arrow => {
+            arrow.remove();
+        });
     });
 });
