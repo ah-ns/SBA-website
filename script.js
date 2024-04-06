@@ -41,12 +41,15 @@ $(function() {
     let team1WinPercent = team1.wins / (team1.wins + team1.losses);
     let team2WinPercent = team2.wins / (team2.wins + team2.losses);
 
+    // Based off win percentage first
     if (team1WinPercent > team2WinPercent) {
         result = true;
     } else if (team1WinPercent == team2WinPercent) {
+        // Wins second
         if (team1.wins > team2.wins) {
             result = true;
         } else if (team1.wins == team2.wins) {
+            // And points allowed third
             result = team1.pointsAllowed < team2.pointsAllowed;
         }
     }
@@ -61,7 +64,15 @@ $(function() {
 
       for (var i = 0; i < teamData.length; i++) {
           var row = $("<tr>");
-          row.append($("<td>").text((i + 1) + " (" + teamData[i].rankChange + ")"));
+          var rankChangeDisplay = teamData[i].rankChange;
+          if (rankChangeDisplay > 0) {
+            rankChangeDisplay = " ⮝ " + rankChangeDisplay;
+          } else if (rankChangeDisplay < 0) {
+            rankChangeDisplay = " ⮟ " + (rankChangeDisplay + -2 * rankChangeDisplay) ;
+          } else {
+            rankChangeDisplay = " – ";
+          }
+          row.append($("<td>").text((i + 1) + rankChangeDisplay));
           row.append($("<td>").text(teamData[i].name));
           row.append($("<td>").text(teamData[i].wins));
           row.append($("<td>").text(teamData[i].losses));
