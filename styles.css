@@ -161,5 +161,11 @@ header {
 }
 /*---------------------------standings styles--------------------------------------*/
 .standings{
-  height:100vh;
+  padding:50px 0;
+  height:auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
 }
+
