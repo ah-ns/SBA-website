@@ -1,5 +1,5 @@
 $(function() {
-  
+
   // Function to retrieve team data from localStorage
   function getTeamDataFromStorage() {
     const storedData = localStorage.getItem('teamData');
@@ -111,23 +111,45 @@ $(function() {
     leaderboardTableBody.empty();
 
     for (var i = 0; i < teamData.length; i++) {
-      var row = $("<tr>");
-      var rankChangeDisplay = teamData[i].rankChange;
-      if (rankChangeDisplay > 0) {
-        rankChangeDisplay = " ⮝ " + rankChangeDisplay;
-      } else if (rankChangeDisplay < 0) {
-        rankChangeDisplay = " ⮟ " + (rankChangeDisplay + -2 * rankChangeDisplay);
-      } else {
-        rankChangeDisplay = " – ";
-      }
-      row.append($("<td>").text((i + 1) + rankChangeDisplay));
-      row.append($("<td>").text(teamData[i].name));
-      row.append($("<td>").text(teamData[i].wins));
-      row.append($("<td>").text(teamData[i].losses));
-      row.append($("<td>").text(teamData[i].pointsAllowed));
-      leaderboardTableBody.append(row);
+        var row = $("<tr>");
+        var rankChangeDisplay = teamData[i].rankChange;
+        if (rankChangeDisplay > 0) {
+            rankChangeDisplay = " ⮝ " + rankChangeDisplay;
+        } else if (rankChangeDisplay < 0) {
+            rankChangeDisplay = " ⮟ " + (rankChangeDisplay + -2 * rankChangeDisplay);
+        } else {
+            rankChangeDisplay = " – ";
+        }
+        row.append($("<td>").text((i + 1) + rankChangeDisplay));
+
+        // Create a <td> element for the team name
+        var teamNameCell = $("<td>");
+
+        // Create an <img> tag for the logo
+        var logoImg = $("<img>");
+        var teamName = teamData[i].name;
+        logoImg.attr("src", "images/" + teamName + ".JPEG"); // Set src attribute of the image
+        logoImg.attr("alt", teamData[i].name); // Set alt attribute of the image
+        
+        // Add CSS styling to set the size of the logo image
+        logoImg.css({"width": "50px", "height": "auto"}); // Adjust width as per your requirement
+        
+        // Prepend the logo image to the team name <td>
+        teamNameCell.append(logoImg);
+
+        // Add team name after the logo
+        teamNameCell.append(document.createTextNode(" " + teamData[i].name));
+
+        // Append the modified <td> to the row
+        row.append(teamNameCell);
+
+        row.append($("<td>").text(teamData[i].wins));
+        row.append($("<td>").text(teamData[i].losses));
+        row.append($("<td>").text(teamData[i].pointsAllowed));
+        leaderboardTableBody.append(row);
     }
   }
+
 
   // Initial leaderboard update
   updateLeaderboard();

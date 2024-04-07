@@ -186,6 +186,18 @@ header {
   background-color:white;
   height:100%;
 }
+
+#leaderboardTableBody tr td:nth-child(2){
+  width:60%;
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  padding:0;
+}
+#leaderboardTableBody tr td:nth-child(2) img{
+  padding-right:20%;
+}
+
 .table-label{
   margin-bottom:80px;
 }
@@ -202,9 +214,13 @@ header {
   text-align:center;
 }
 
-#leaderboardTable td:first-child,#leaderboardTable th:first-child{
-  text-align:left;
-  padding-left:20px;
+#leaderboardTable td:first-child,#leaderboardTable th:first-child,#leaderboardTable th:nth-child(2){
+  text-align:center;
+  transform:translateX(-23%);
+}
+
+#leaderboardTable th:nth-child(2){
+  padding-left:80px;
 }
 
 .edit-btns{
@@ -238,6 +254,10 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.fa-arrow-up::before{
+  margin-left:4px;
 }
 
 .fa-arrow-up:hover{
