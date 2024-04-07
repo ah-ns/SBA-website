@@ -84,7 +84,7 @@ $(function() {
   // Initial leaderboard update
   updateLeaderboard();
 
-  // Simulate live updates every 5 seconds
+  // Simulate live updates in interval of ms
   setInterval(function() {
       // Randomly update wins
     //   for (var i = 0; i < teamData.length; i++) {
