@@ -180,6 +180,11 @@ header {
   border-collapse: collapse; /* Collapse borders */
   width: 80%; /* Adjust width as needed */
 }
+#leaderboardTable th{
+  background-color:white;
+  font-size:150%;
+  padding:15px;
+}
 
 #leaderboardTableBody tr {
   margin-top:30px;
@@ -204,23 +209,21 @@ header {
 #leaderboardTableBody tr:nth-child(odd) {
   background-color: #f2f2f2; /* Light grey background color for odd rows */
 }
-#leaderboardTable th{
-  font-size:150%;
-}
+
 #leaderboardTable td{
   width:15%;
-  padding:20px 20px;
-  margin:20px;
+  padding:5px 20px;
+  margin:5px 0;
   text-align:center;
 }
 
-#leaderboardTable td:first-child,#leaderboardTable th:first-child,#leaderboardTable th:nth-child(2){
-  text-align:center;
-  transform:translateX(-23%);
-}
-
-#leaderboardTable th:nth-child(2){
-  padding-left:80px;
+#leaderboardTable th:first-child{
+  text-align:left;
+  padding-left:15px;
+} 
+#leaderboardTable td:first-child{
+  text-align:left;
+  transform:translateX(7%);
 }
 
 .edit-btns{
