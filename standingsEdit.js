@@ -3,6 +3,8 @@ const saveButton = document.getElementById('savebutton');
 const leaderboardTableBody = document.getElementById('leaderboardTableBody');
 
 editButton.addEventListener('click', function() {
+    editButton.style.display = 'none';
+    saveButton.style.display = 'flex';
     console.log("editing");
 
     // Loop through each row in the table body
@@ -39,31 +41,6 @@ editButton.addEventListener('click', function() {
     });
 });
 
-// You can add functionality to save button if needed
-saveButton.addEventListener('click', function() {
-    console.log("saving");
-
-    // Example: Retrieve data from input fields and perform save operation
-    const rows = leaderboardTableBody.querySelectorAll('tr');
-    rows.forEach(row => {
-        const lastCell = row.querySelector('td:last-child');
-        const inputField = lastCell.querySelector('input');
-        lastCell.textContent = inputField.value; // Set last cell content to input value
-
-        // Clear second to last and third to last cell content
-        const secondToLastCell = row.querySelectorAll('td')[row.cells.length - 2];
-        const thirdToLastCell = row.querySelectorAll('td')[row.cells.length - 3];
-        secondToLastCell.textContent = secondToLastCell.textContent; // Maintain existing content
-        thirdToLastCell.textContent = thirdToLastCell.textContent; // Maintain existing content
-
-        // Remove the arrows
-        const arrows = row.querySelectorAll('.fas');
-        arrows.forEach(arrow => {
-            arrow.remove();
-        });
-    });
-});
-
 leaderboardTableBody.addEventListener('click', function(event) {
     const target = event.target;
 
@@ -74,14 +51,14 @@ leaderboardTableBody.addEventListener('click', function(event) {
 
     if (target && target.classList.contains('fa-arrow-up')) {
         if (!isNaN(currentValue)) {
-            cell.textContent = currentValue + 1; // Increment the value by 1
+            cell.textContent = checkPositive(currentValue + 1); // Increment the value by 1
         }
         // Add arrows to the cell on top
         const cellAbove = cell.parentElement.querySelector('td:nth-child('+(cellIdx+1)+')');
         addArrowsToCell(cellAbove);
     } else if (target && target.classList.contains('fa-arrow-down')) {
         if (!isNaN(currentValue)) {
-            cell.textContent = currentValue - 1; // Decrement the value by 1
+            cell.textContent = checkPositive(currentValue - 1); // Decrement the value by 1
         }
         // Add arrows to the cell on top
         const cellAbove = cell.parentElement.querySelector('td:nth-child('+(cellIdx+1)+')');
@@ -97,4 +74,23 @@ function addArrowsToCell(cell) {
     downArrow.classList.add('fas', 'fa-arrow-down');
     cell.append(upArrow);
     cell.append(downArrow);
+}
+
+//validation method
+function checkPositive(cellVal){
+    if(cellVal <0){
+        cellVal = 0;
+    }
+
+    return cellVal;
+}
+
+function checkInputPositive(){
+    const rows = leaderboardTableBody.querySelectorAll('tr');
+    rows.forEach(row=>{
+        const lastCell = row.querySelector('td:last-child');
+        if(lastCell.textContent<0){
+            lastCell.textContent = 0;
+        }
+    })
 }

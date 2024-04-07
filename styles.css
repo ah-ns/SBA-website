@@ -227,6 +227,17 @@ header {
   align-items: center;
 }
 
+.fa-arrow-up:hover{
+  color:green;
+}
+.fa-arrow-down:hover{
+  color:red;
+}
+
+#savebutton{
+  display:none;
+}
+
 
 /* ---------------------RESPONSIVE DESIGN--------------------- */
 @media screen and (max-width: 700px) {

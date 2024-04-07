@@ -1,17 +1,30 @@
 $(function() {
   // Sample leaderboard data
   var teamData = [
-      { name: "a", wins: 100, losses: 1, pointsAllowed: 10, rankChange: 0 },
-      { name: "b", wins: 100, losses: 1, pointsAllowed: 9, rankChange: 0 },
-      { name: "c", wins: 50, losses: 1, pointsAllowed: 9, rankChange: 0 },
-      { name: "d", wins: 100, losses: 2, pointsAllowed: 9, rankChange: 0 },
-      { name: "e", wins: 60, losses: 1, pointsAllowed: 9, rankChange: 0 },
-      { name: "f", wins: 50, losses: 1, pointsAllowed: 9, rankChange: 0 },
-      { name: "g", wins: 28, losses: 1, pointsAllowed: 9, rankChange: 0 },
-      { name: "h", wins: 57, losses: 1, pointsAllowed: 9, rankChange: 0 },
-      { name: "i", wins: 90, losses: 1, pointsAllowed: 9, rankChange: 0 },
-      { name: "j", wins: 35, losses: 1, pointsAllowed: 9, rankChange: 0 }
+      { name: "Mangione Miners", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Alonso's Aces", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Seton Seyboldos", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Green Peel Guardians", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Knott Nauticals", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Reitz Crackers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Campion Cavaliers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Rope Walkers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Nobles Knights", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Rofo Roughhousers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+      { name: "Claver Clams", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 }
   ];
+
+  //updates the teamData based on what is now in the website
+  function updateTeamDataFromTable() {
+    var rows = $("#leaderboardTableBody").find("tr");
+    for (var i = 0; i < rows.length; i++) {
+        var cells = $(rows[i]).find("td");
+        teamData[i].wins = parseInt($(cells[2]).text());
+        teamData[i].losses = parseInt($(cells[3]).text());
+        teamData[i].pointsAllowed = parseInt($(cells[4]).text());
+    }
+    console.log("Sorted teamData:", teamData);
+  }
 
   // Sorts the teams by wins and keeps track of initial rank
   function insertionSort() {
@@ -32,29 +45,35 @@ $(function() {
     for (let i = 0; i < teamData.length; i++) {
       teamData[i].rankChange = initialRanks[teamData[i].name] - (i+1);
     }
+    console.log("Updated teamData:", teamData);
   }
 
   // Compares the stats of two teams
   function compareStats(team1, team2) {
-    let result = false;
+    if (team1.wins !== 0 && team2.wins === 0) {
+        return true;
+    } else if (team1.wins === 0 && team2.wins !== 0) {
+        return false;
+    } else {
+        // Continue with your existing comparison logic
+        let team1WinPercent = team1.wins / (team1.wins + team1.losses);
+        let team2WinPercent = team2.wins / (team2.wins + team2.losses);
 
-    let team1WinPercent = team1.wins / (team1.wins + team1.losses);
-    let team2WinPercent = team2.wins / (team2.wins + team2.losses);
-
-    // Based off win percentage first
-    if (team1WinPercent > team2WinPercent) {
-        result = true;
-    } else if (team1WinPercent == team2WinPercent) {
-        // Wins second
-        if (team1.wins > team2.wins) {
-            result = true;
-        } else if (team1.wins == team2.wins) {
-            // And points allowed third
-            result = team1.pointsAllowed < team2.pointsAllowed;
+        // Based off win percentage first
+        if (team1WinPercent > team2WinPercent) {
+            return true;
+        } else if (team1WinPercent === team2WinPercent) {
+            // Wins second
+            if (team1.wins > team2.wins) {
+                return true;
+            } else if (team1.wins === team2.wins) {
+                // And points allowed third
+                return team1.pointsAllowed < team2.pointsAllowed;
+            }
         }
     }
 
-    return result;
+    return false;
   } 
 
   // Function to update the leaderboard table
@@ -84,18 +103,56 @@ $(function() {
   // Initial leaderboard update
   updateLeaderboard();
 
-  // Simulate live updates in interval of ms
-  setInterval(function() {
-      // TODO: add stats based on buttons pressed
 
-    //   for (var i = 0; i < teamData.length; i++) {
-    //       teamData[i].wins += Math.floor(Math.random() * 10) + 1;
-    //   }
+const editButton = document.getElementById('editbutton');
+const saveButton = document.getElementById('savebutton');
+const leaderboardTableBody = document.getElementById('leaderboardTableBody');
 
-      // Sort leaderboard data by wins in descending order
-      insertionSort();
+// You can add functionality to save button if needed
+saveButton.addEventListener('click', function() {
+  saveButton.style.display = 'none';    
+  editButton.style.display = 'flex';
 
-      // Update the leaderboard table
-      updateLeaderboard();
-  }, 1000000); // Change the interval time as needed
+  console.log("saving");
+
+  // Example: Retrieve data from input fields and perform save operation
+  const rows = leaderboardTableBody.querySelectorAll('tr');
+  rows.forEach(row => {
+      const lastCell = row.querySelector('td:last-child');
+      const inputField = lastCell.querySelector('input');
+      lastCell.textContent = inputField.value; // Set last cell content to input value
+
+      // Clear second to last and third to last cell content
+      const secondToLastCell = row.querySelectorAll('td')[row.cells.length - 2];
+      const thirdToLastCell = row.querySelectorAll('td')[row.cells.length - 3];
+      secondToLastCell.textContent = secondToLastCell.textContent; // Maintain existing content
+      thirdToLastCell.textContent = thirdToLastCell.textContent; // Maintain existing content
+
+      // Remove the arrows
+      const arrows = row.querySelectorAll('.fas');
+      arrows.forEach(arrow => {
+          arrow.remove();
+      });
+  });
+
+  checkInputPositive();
+  
+  //update and sort the table
+  updateTeamDataFromTable();
+  insertionSort();
+  updateLeaderboard();
+});
+
+
+  // // Simulate live updates in interval of ms
+  // setInterval(function() {
+  //     // TODO: add stats based on buttons pressed
+  //     updateTeamDataFromTable();
+  //     //testing the sort with random numbers every few seconds
+  //     // for (var i = 0; i < teamData.length; i++) {
+  //     //     teamData[i].wins += Math.floor(Math.random() * 10) + 1;
+  //     // }
+  //   insertionSort();
+  //   updateLeaderboard();
+  // }, 10000); // Change the interval time as needed
 });
