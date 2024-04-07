@@ -220,6 +220,19 @@ header {
   padding:3%;
 }
 
+/* Define the shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200%; }
+  100% { background-position: 200%; }
+}
+
+/* Apply the shimmer animation to .edit-btns on hover */
+.edit-btns button:hover {
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(90deg, #f0f0f0 30%, #e0e0e0 50%, #f0f0f0 70%);
+  background-size: 200% 200%;
+}
+
 /*------------------------------------------------editing----------------------------------------*/
 .arrow-icons {
   display: flex;
@@ -234,9 +247,51 @@ header {
   color:red;
 }
 
-#savebutton{
+#savebutton, #resetbutton{
   display:none;
+  font-weight:bold;
 }
+
+#resetbutton{
+  background-color:red;
+}
+
+#savebutton{
+  background-color:green;
+}
+
+/*----------------------------------------------------reset confirmation box-------------------------------------*/
+.confirmation-box {
+  display:none;
+  position: absolute;
+  z-index:3;
+  background-color: #ffffff;
+  padding: 20px;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+.yes-btn,
+.no-btn {
+  padding: 10px 20px;
+  margin: 0 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.no-btn {
+  background-color: #f44336;
+}
+
 
 
 /* ---------------------RESPONSIVE DESIGN--------------------- */
