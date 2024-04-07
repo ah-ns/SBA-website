@@ -86,7 +86,8 @@ $(function() {
 
   // Simulate live updates in interval of ms
   setInterval(function() {
-      // Randomly update wins
+      // TODO: add stats based on buttons pressed
+
     //   for (var i = 0; i < teamData.length; i++) {
     //       teamData[i].wins += Math.floor(Math.random() * 10) + 1;
     //   }
