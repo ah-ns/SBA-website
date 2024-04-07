@@ -63,3 +63,38 @@ saveButton.addEventListener('click', function() {
         });
     });
 });
+
+leaderboardTableBody.addEventListener('click', function(event) {
+    const target = event.target;
+
+    // Handle up arrow click
+    const cell = target.parentElement; // Get parent cell
+    const cellIdx = cell.cellIndex;
+    const currentValue = parseInt(cell.textContent);
+
+    if (target && target.classList.contains('fa-arrow-up')) {
+        if (!isNaN(currentValue)) {
+            cell.textContent = currentValue + 1; // Increment the value by 1
+        }
+        // Add arrows to the cell on top
+        const cellAbove = cell.parentElement.querySelector('td:nth-child('+(cellIdx+1)+')');
+        addArrowsToCell(cellAbove);
+    } else if (target && target.classList.contains('fa-arrow-down')) {
+        if (!isNaN(currentValue)) {
+            cell.textContent = currentValue - 1; // Decrement the value by 1
+        }
+        // Add arrows to the cell on top
+        const cellAbove = cell.parentElement.querySelector('td:nth-child('+(cellIdx+1)+')');
+        addArrowsToCell(cellAbove);
+    }
+});
+
+// Function to add arrows to a cell
+function addArrowsToCell(cell) {
+    const upArrow = document.createElement('i');
+    upArrow.classList.add('fas', 'fa-arrow-up');
+    const downArrow = document.createElement('i');
+    downArrow.classList.add('fas', 'fa-arrow-down');
+    cell.append(upArrow);
+    cell.append(downArrow);
+}
