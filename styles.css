@@ -39,7 +39,7 @@ header {
     padding-left:90%;
     font-size:25px;
     text-decoration:none;
-    color:white;
+    color:inherit;
     font-weight:300;
 }
 .head-el a i:hover{
@@ -56,8 +56,7 @@ header {
     color:white;
     height:auto;
     padding:50px 0;
-
-    max-width:100%;
+    width:100vw;
     overflow:hidden;
 }
 .team-info{
@@ -163,22 +162,35 @@ header {
 }
 /*---------------------------standings styles--------------------------------------*/
 .standings{
-  padding:50px 0;
   height:auto;
   display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  background-color:var(--sba-blue);
+  background-color:white;
+  width:100vw;
 }
 
 #stand-title{
-  font-size:350%;
+  width:100%;
+  background-color:var(--sba-blue);
+  color: white;
+
+  display:block;
+  text-align:center;
+  line-height: 3px;;
+  padding:1% 10px;
+  margin-bottom:2%;;
+}
+#stand-title p{
+  color:#b1b0b0;
+  font-size:smaller;
 }
 
 #leaderboardTable {
   border-collapse: collapse; /* Collapse borders */
   width: 80%; /* Adjust width as needed */
+  box-shadow: 0px 3px 6px rgb(147, 146, 146);
 }
 #leaderboardTable th{
   background-color:white;
@@ -235,7 +247,7 @@ header {
   width:60%;
 }
 .edit-btns button{
-  margin:4%;
+  margin:1%;
   padding:3%;
 }
 
@@ -246,7 +258,7 @@ header {
 }
 
 /* Apply the shimmer animation to .edit-btns on hover */
-.edit-btns button:hover {
+.edit-btns #savebutton:hover, .edit-btns #resetbutton:hover {
   animation: shimmer 1.5s infinite linear;
   background: linear-gradient(90deg, #f0f0f0 30%, #e0e0e0 50%, #f0f0f0 70%);
   background-size: 200% 200%;
@@ -261,6 +273,7 @@ header {
 
 .fa-arrow-up::before{
   margin-left:4px;
+  margin-right:3px;
 }
 
 .fa-arrow-up:hover{
@@ -270,6 +283,25 @@ header {
   color:red;
 }
 
+#editbutton{
+  width:200px;
+  height:60px;
+  border-radius:50px;
+  border: none;
+  background-color:var(--sba-blue);
+  color:white;
+  font-weight:bolder;
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  border: 3px solid var(white);
+}
+
+#editbutton:hover{
+  background-color: white;
+  color:var(--sba-blue);
+  border: 3px solid var(--sba-blue);
+}
 #savebutton, #resetbutton{
   display:none;
   font-weight:bold;

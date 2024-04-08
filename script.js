@@ -128,7 +128,7 @@ $(function() {
         // Create an <img> tag for the logo
         var logoImg = $("<img>");
         var teamName = teamData[i].name;
-        logoImg.attr("src", "images/" + teamName + ".JPEG"); // Set src attribute of the image
+        logoImg.attr("src", "images/Logos/" + teamName + ".png"); // Set src attribute of the image
         logoImg.attr("alt", teamData[i].name); // Set alt attribute of the image
         
         // Add CSS styling to set the size of the logo image
