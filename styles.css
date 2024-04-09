@@ -321,6 +321,13 @@ header {
 .week-board button{
   width:150px;
   height:45px;
+  margin:0 2px;
+}
+
+.active:hover{
+  background-color: var(--sba-blue);
+  color:white;
+  border: 3px solid var(white);
 }
 
 .not-active{
@@ -330,7 +337,7 @@ header {
 }
 
 .not-active:hover{
-  background-color: var(--sba-blue);
+  background-color: rgba(49, 100, 158,0.8);;
   color:white;
   border: 3px solid var(white);
 }

@@ -30,6 +30,10 @@ $(function() {
     { name: "Claver Clams", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 }
   ];
 
+  //data for the weeks
+  var weekData=["Week 1"];
+  var weekPointer = 1;
+
   //reset all the teams data to 0 wins, losses, and PA
   function resetTeamData() {
     for (var i = 0; i < teamData.length; i++) {
@@ -132,7 +136,7 @@ $(function() {
         logoImg.attr("alt", teamData[i].name); // Set alt attribute of the image
         
         // Add CSS styling to set the size of the logo image
-        logoImg.css({"width": "50px", "height": "auto"}); // Adjust width as per your requirement
+        logoImg.css({"width": "38px", "height": "auto"}); // Adjust width as per your requirement
         
         // Prepend the logo image to the team name <td>
         teamNameCell.append(logoImg);
@@ -161,6 +165,7 @@ $(function() {
   const noResetButton = document.querySelector('.no-btn');
   const leaderboardTableBody = document.getElementById('leaderboardTableBody');
   const confBox = document.getElementById("confirmation-box");
+  const weekBoard = document.getElementById('week-board');
 
   //-----------------------------------ACTION LISTENERS for the different buttons to do with standings--------------------------------------------
   centerConfirmationBox();
@@ -191,6 +196,13 @@ $(function() {
         arrow.remove();
       });
     });
+
+    //add a week button for the week
+    weekPointer++;
+    const weekButton = document.createElement('button');
+    weekButton.classList.add('blue-btn', 'not-active');
+    weekButton.textContent = 'Week '+weekPointer;
+    weekBoard.appendChild(weekButton);
 
     checkInputPositive();
 
@@ -280,6 +292,27 @@ $(function() {
       }
     })
   }
+  //---------------------------------------week board action listener--------------------------
+  // Event listener for buttons within the week board
+  weekBoard.addEventListener('click', function(event) {
+    const clickedButton = event.target;
+    clickedButton.classList.add("active");
+    if (clickedButton.tagName === 'BUTTON') {
+      // Remove not-active class from the clicked button
+      clickedButton.classList.remove('not-active');
+
+      // Add not-active class to all other buttons
+      const buttons = weekBoard.querySelectorAll('button');
+      buttons.forEach(button => {
+        if (button !== clickedButton) {
+          button.classList.add('not-active');
+        }
+        if(button!== clickedButton){
+          button.classList.remove('active');
+        }
+      });
+    }
+  });
 
   //-------------------------------------confirmation box for reset data------------------------------
   //make sure it is centered in the users current screen at all times while displayed
@@ -316,6 +349,19 @@ $(function() {
     saveButton.style.display = 'none';
     resetButton.style.display = 'none';
     editButton.style.display = 'flex';
+
+    // Remove all child elements from the week board except the first one - Week 1
+    while (weekBoard.children.length > 1) {
+      weekBoard.removeChild(weekBoard.lastChild);
+    }
+    weekPointer=1;
+    
+    //make the first week button active if it is not already
+    const firstButton = document.querySelector('#week-board button:first-child');
+    if (firstButton) {
+        firstButton.classList.remove('not-active');
+        firstButton.classList.add('active');
+    }
 
     resetTeamData();
     updateLeaderboard();
