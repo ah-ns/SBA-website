@@ -1,8 +1,8 @@
 $(function() {
 
   // Function to retrieve team data from localStorage
-  function getTeamDataFromStorage() {
-    const storedData = localStorage.getItem('teamData');
+  function getTeamDataFromStorage(key) {
+    const storedData = localStorage.getItem(key);
     if (storedData) {
       return JSON.parse(storedData);
     } else {
@@ -11,12 +11,12 @@ $(function() {
   }
 
   // Function to store team data in localStorage
-  function saveTeamDataToStorage(data) {
-    localStorage.setItem('teamData', JSON.stringify(data));
+  function saveTeamDataToStorage(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
   }
 
   // Sample leaderboard data
-  var teamData = getTeamDataFromStorage() || [
+  var teamData = getTeamDataFromStorage('teamData') || [
     { name: "Mangione Miners", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
     { name: "Alonso's Aces", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
     { name: "Seton Seyboldos", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
@@ -38,7 +38,7 @@ $(function() {
       teamData[i].pointsAllowed = 0;
       teamData[i].rankChange = 0;
     }
-    saveTeamDataToStorage(teamData); // Save updated data to local storage
+    saveTeamDataToStorage('teamData', teamData); // Save updated data to local storage
   }
 
   //updates the teamData based on what is now in the website
@@ -50,7 +50,7 @@ $(function() {
       teamData[i].losses = parseInt($(cells[3]).text());
       teamData[i].pointsAllowed = parseInt($(cells[4]).text());
     }
-    saveTeamDataToStorage(teamData); // Save updated data to local storage
+    saveTeamDataToStorage('teamData', teamData); // Save updated data to local storage
     console.log("Sorted teamData:", teamData);
   }
 
@@ -73,7 +73,7 @@ $(function() {
     for (let i = 0; i < teamData.length; i++) {
       teamData[i].rankChange = initialRanks[teamData[i].name] - (i + 1);
     }
-    saveTeamDataToStorage(teamData); // Save updated data to local storage
+    saveTeamDataToStorage('teamData', teamData); // Save updated data to local storage
     console.log("Updated teamData:", teamData);
   }
 

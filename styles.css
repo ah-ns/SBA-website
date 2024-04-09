@@ -169,6 +169,7 @@ header {
   flex-direction:column;
   background-color:white;
   width:100vw;
+  padding-bottom:50px;
 }
 
 #stand-title{
@@ -182,9 +183,21 @@ header {
   padding:1% 10px;
   margin-bottom:2%;;
 }
+
+#stand-title h2{
+  text-transform:uppercase;
+}
 #stand-title p{
-  color:#b1b0b0;
+  color:#e3e3e3;
   font-size:smaller;
+}
+
+.week-board{
+  width:80%;
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  margin:1%;
 }
 
 #leaderboardTable {
@@ -271,11 +284,14 @@ header {
   align-items: center;
 }
 
-.fa-arrow-up::before{
-  margin-left:4px;
-  margin-right:3px;
-}
 
+.fa-arrow-up, .fa-arrow-down{
+  border:0.5px solid black;
+  margin-left:3px;
+}
+.fa-arrow-up{
+  margin-left:7px;
+}
 .fa-arrow-up:hover{
   color:green;
 }
@@ -283,7 +299,7 @@ header {
   color:red;
 }
 
-#editbutton{
+.blue-btn{
   width:200px;
   height:60px;
   border-radius:50px;
@@ -296,11 +312,29 @@ header {
   align-items:center;
 }
 
-#editbutton:hover{
+.blue-btn:hover{
   background-color: white;
   color:var(--sba-blue);
   border: 3px solid var(--sba-blue);
 }
+
+.week-board button{
+  width:150px;
+  height:45px;
+}
+
+.not-active{
+  background-color: white;
+  color:var(--sba-blue);
+  border: 3px solid var(--sba-blue);
+}
+
+.not-active:hover{
+  background-color: var(--sba-blue);
+  color:white;
+  border: 3px solid var(white);
+}
+
 #savebutton, #resetbutton{
   display:none;
   font-weight:bold;
