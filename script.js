@@ -1,7 +1,7 @@
 $(function() {
 
   // Function to retrieve team data from localStorage
-  function getTeamDataFromStorage(key) {
+  function getDataFromStorage(key) {
     const storedData = localStorage.getItem(key);
     if (storedData) {
       return JSON.parse(storedData);
@@ -11,12 +11,12 @@ $(function() {
   }
 
   // Function to store team data in localStorage
-  function saveTeamDataToStorage(key, data) {
+  function saveDataToStorage(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
   // Sample leaderboard data
-  var teamData = getTeamDataFromStorage('teamData') || [
+  var teamData = getDataFromStorage('teamData') || [
     { name: "Mangione Miners", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
     { name: "Alonso's Aces", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
     { name: "Seton Seyboldos", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
@@ -31,7 +31,8 @@ $(function() {
   ];
 
   //data for the weeks
-  var weekData=["Week 1"];
+  // Initialize weekData from localStorage or create an empty array if it doesn't exist
+  let weekData = getDataFromStorage('weekData') || [];
   var weekPointer = 1;
 
   //reset all the teams data to 0 wins, losses, and PA
@@ -42,7 +43,7 @@ $(function() {
       teamData[i].pointsAllowed = 0;
       teamData[i].rankChange = 0;
     }
-    saveTeamDataToStorage('teamData', teamData); // Save updated data to local storage
+    saveDataToStorage('teamData', teamData); // Save updated data to local storage
   }
 
   //updates the teamData based on what is now in the website
@@ -54,7 +55,7 @@ $(function() {
       teamData[i].losses = parseInt($(cells[3]).text());
       teamData[i].pointsAllowed = parseInt($(cells[4]).text());
     }
-    saveTeamDataToStorage('teamData', teamData); // Save updated data to local storage
+    saveDataToStorage('teamData', teamData); // Save updated data to local storage
     console.log("Sorted teamData:", teamData);
   }
 
@@ -77,7 +78,7 @@ $(function() {
     for (let i = 0; i < teamData.length; i++) {
       teamData[i].rankChange = initialRanks[teamData[i].name] - (i + 1);
     }
-    saveTeamDataToStorage('teamData', teamData); // Save updated data to local storage
+    saveDataToStorage('teamData', teamData); // Save updated data to local storage
     console.log("Updated teamData:", teamData);
   }
 
@@ -167,8 +168,76 @@ $(function() {
   const confBox = document.getElementById("confirmation-box");
   const weekBoard = document.getElementById('week-board');
 
+  //-----------------------------------Week Data---------------
+  //saving and adding
+
+  // Function to add a new week button
+  function addWeekButton(){
+    //get the right weekPointer, even after website refresh, and increment it
+    weekPointer = weekData.length;
+    weekPointer++;
+    saveDataToStorage('weekPointer', weekPointer);
+
+    const weekButton = document.createElement('button');
+    weekButton.classList.add('blue-btn', 'not-active');
+    weekButton.textContent = 'Week ' + weekPointer;
+    weekBoard.appendChild(weekButton);
+    
+    // Add the new week button to weekData
+    weekData.push('Week ' + weekPointer);
+    
+    // Save weekData to localStorage
+    saveDataToStorage('weekData', weekData); // Save updated data to local storage
+  };
+
+// Load existing week buttons from weekData
+function loadWeekButtons(){
+  // Clear existing week buttons
+  while (weekBoard.firstChild) {
+    weekBoard.removeChild(weekBoard.firstChild);
+  }
+  
+  // Add new week buttons from weekData
+  weekData.forEach(week => {
+    const weekButton = document.createElement('button');
+    weekButton.classList.add('blue-btn', 'not-active');
+    weekButton.textContent = week;
+
+    if(week == "Week "+weekPointer){ //make sure new week is active
+      weekButton.classList.remove("not-active");
+      weekButton.classList.add("active");
+    }
+    weekBoard.appendChild(weekButton);
+  });
+};
+
+loadWeekButtons();
+
+  // Function to reset week buttons
+  function resetWeekButtons(){
+    // Remove all child elements from the week board except the first one - Week 1
+    while (weekBoard.children.length > 1) {
+      weekBoard.removeChild(weekBoard.lastChild);
+    }
+    weekPointer = 1;
+
+    // Make the first week button active if it is not already
+    const firstButton = document.querySelector('#week-board button:first-child');
+    if (firstButton) {
+      firstButton.classList.remove('not-active');
+      firstButton.classList.add('active');
+    }
+
+    // Update weekData to only account for the current buttons that exist (which should only be the first button with text - content "Week 1")
+    weekData = ['Week 1'];
+
+    // Save weekData to localStorage
+    saveDataToStorage('weekData', weekData);
+  };
+
   //-----------------------------------ACTION LISTENERS for the different buttons to do with standings--------------------------------------------
   centerConfirmationBox();
+
   //save button
   saveButton.addEventListener('click', function() {
     saveButton.style.display = 'none';
@@ -193,16 +262,16 @@ $(function() {
       // Remove the arrows
       const arrows = row.querySelectorAll('.fas');
       arrows.forEach(arrow => {
-        arrow.remove();
+      arrow.remove();
       });
     });
 
     //add a week button for the week
-    weekPointer++;
-    const weekButton = document.createElement('button');
-    weekButton.classList.add('blue-btn', 'not-active');
-    weekButton.textContent = 'Week '+weekPointer;
-    weekBoard.appendChild(weekButton);
+    addWeekButton();
+    loadWeekButtons();
+
+    //save the weekPointer
+    saveDataToStorage('weekPointer', weekPointer);
 
     checkInputPositive();
 
@@ -217,6 +286,10 @@ $(function() {
     resetButton.style.display = 'flex';
     saveButton.style.display = 'flex';
     console.log("editing");
+
+    //get the weekPointer from storage
+    // Retrieve weekPointer from local storage
+    const storedWeekPointer = localStorage.getItem('weekPointer');
 
     // Loop through each row in the table body
     const rows = leaderboardTableBody.querySelectorAll('tr');
@@ -274,15 +347,15 @@ $(function() {
     cell.append(downArrow);
   }
 
-  //validation method
+  //validation method to check if a cells value is positive
   function checkPositive(cellVal) {
     if (cellVal < 0) {
       cellVal = 0;
     }
-
     return cellVal;
   }
 
+  //this checks that all the PA input are positive and if not they are set to 0
   function checkInputPositive() {
     const rows = leaderboardTableBody.querySelectorAll('tr');
     rows.forEach(row => {
@@ -296,6 +369,14 @@ $(function() {
   // Event listener for buttons within the week board
   weekBoard.addEventListener('click', function(event) {
     const clickedButton = event.target;
+    console.log("Clicked button: "+clickedButton.textContent);
+
+    //--------make sure that we don't perform these operations on the bar behind the weeks-------
+    if (clickedButton.tagName.toLowerCase() === 'div') {
+      // If clickedButton is an HTML div element
+      return;
+    }
+
     clickedButton.classList.add("active");
     if (clickedButton.tagName === 'BUTTON') {
       // Remove not-active class from the clicked button
@@ -350,18 +431,7 @@ $(function() {
     resetButton.style.display = 'none';
     editButton.style.display = 'flex';
 
-    // Remove all child elements from the week board except the first one - Week 1
-    while (weekBoard.children.length > 1) {
-      weekBoard.removeChild(weekBoard.lastChild);
-    }
-    weekPointer=1;
-    
-    //make the first week button active if it is not already
-    const firstButton = document.querySelector('#week-board button:first-child');
-    if (firstButton) {
-        firstButton.classList.remove('not-active');
-        firstButton.classList.add('active');
-    }
+    resetWeekButtons();
 
     resetTeamData();
     updateLeaderboard();
