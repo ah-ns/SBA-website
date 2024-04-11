@@ -12,17 +12,48 @@
     <title>Loyola Swimmers Basketball Association</title>
 </head>
 <body>
-    <header>
-        <div class = "head-el">
-            <h1>Loyola SBA</h1>
-            <a href="https://www.instagram.com/loyola_sba/" target="_blank"><i class="fa fa-brands fa-instagram" alt="Instagram Link"></i></a>
+    <div class="standings">
+        <div id="stand-title">
+            <h2>Standings</h2>
+            <p>2024</p>
         </div>
-    </header>
+        <div class ="week-board" id="week-board">
+            <button class = "blue-btn active">Week 1</button>
+        </div>
+        <table id="leaderboardTable">
+            <thead>
+                <tr class="table-label">
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Wins</th>
+                    <th>Loses</th>
+                    <th>PA</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardTableBody"></tbody> <!-- Table is dynamically generated -->
+        </table>
+        <section class = "edit-btns">
+            <button class = "new-week-check"id="new-week-check">
+                <input type="checkbox" id="weekCheckBox">
+                <label for="weekCheckBox" class="checkbox-button">Finalize Week</label>
+            </button>
+            <button id="editbutton" class="blue-btn">Edit</button>
+            <button id = "resetbutton">Reset Data</button>
+            <button id="savebutton">Save</button>
+        </section>
+    </div>
+    <div class="confirmation-box" id="confirmation-box">
+        <p>Are you sure you want to reset all teams data? There is no regaining this data at a later date.</p>
+        <div class="button-container">
+            <button class="yes-btn">Yes, I am sure</button>
+            <button class="no-btn">No</button>
+        </div>
+    </div>
     <div class = "teams" id="teams">
         <div class = "team-info">
             <h1>Meet Our Teams</h1>
-            <p>The <span class = "to-white">Loyola Swimmers Basketball Association</span> features 11 competitve Basketball
-            teams which play weekly in the off season. The teams compete at the Loyola courts at Newman and the Fac! Each season teams
+            <p>The <span class = "to-blue">Loyola Swimmers Basketball Association</span> features 11 competitve Basketball
+            teams which play weekly in the NCAA off season. The teams compete at the Loyola courts at Newman and the FAC! Each season teams
             battle to make it to playoff's comprised of the best 8 teams!</p>
         </div>
         <div class = "slides-total">
@@ -106,39 +137,6 @@
             </div>
         </div>
     </div>
-    <div class="standings">
-        <div id="stand-title">
-            <h2>Standings</h2>
-            <p>2024</p>
-        </div>
-        <div class ="week-board" id="week-board">
-            <button class = "blue-btn active">Week 1</button>
-        </div>
-        <table id="leaderboardTable">
-            <thead>
-                <tr class="table-label">
-                    <th>Rank</th>
-                    <th>Team</th>
-                    <th>Wins</th>
-                    <th>Loses</th>
-                    <th>PA</th>
-                </tr>
-            </thead>
-            <tbody id="leaderboardTableBody"></tbody> <!-- Table is dynamically generated -->
-        </table>
-        <section class = "edit-btns">
-            <button id="editbutton" class="blue-btn">Edit</button>
-            <button id = "resetbutton">Reset Data</button>
-            <button id="savebutton">Save</button>
-        </section>
-    </div>
-    <div class="confirmation-box" id="confirmation-box">
-        <p>Are you sure you want to reset all teams data? There is no regaining this data at a later date.</p>
-        <div class="button-container">
-          <button class="yes-btn">Yes, I am sure</button>
-          <button class="no-btn">No</button>
-        </div>
-      </div>
 
     <script src="./jquery.js" defer>
     </script>

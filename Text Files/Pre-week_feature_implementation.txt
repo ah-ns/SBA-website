@@ -1,3 +1,9 @@
+Pre-week_feature_implementation
+
+Here is the Java script produced during the beginning of the project
+saving just in case running into complex problems with future JS
+this code does not yet have the working week feature
+
 $(function() {
 
   // Function to retrieve team data from localStorage
@@ -446,5 +452,7 @@ loadWeekButtons();
   });
 
 });//end everything
+
+
 
 

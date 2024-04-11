@@ -215,6 +215,7 @@ $(function() {
     const leaderboardTableBody = document.getElementById('leaderboardTableBody');
     const confBox = document.getElementById("confirmation-box");
     const weekBoard = document.getElementById('week-board');
+    const checkBox = document.getElementById('new-week-check');
   
     //-----------------------------------Week Data---------------
     //saving and adding
@@ -290,46 +291,47 @@ $(function() {
   
     //save button
     saveButton.addEventListener('click', function() {
-      saveButton.style.display = 'none';
-      resetButton.style.display = 'none';
-      editButton.style.display = 'flex';
-  
-      console.log("saving");
-  
-      // Example: Retrieve data from input fields and perform save operation
-      const rows = leaderboardTableBody.querySelectorAll('tr');
-      rows.forEach(row => {
-        const lastCell = row.querySelector('td:last-child');
-        const inputField = lastCell.querySelector('input');
-        lastCell.textContent = inputField.value; // Set last cell content to input value
-  
-        // Clear second to last and third to last cell content
-        const secondToLastCell = row.querySelectorAll('td')[row.cells.length - 2];
-        const thirdToLastCell = row.querySelectorAll('td')[row.cells.length - 3];
-        secondToLastCell.textContent = secondToLastCell.textContent; // Maintain existing content
-        thirdToLastCell.textContent = thirdToLastCell.textContent; // Maintain existing content
-  
-        // Remove the arrows
-        const arrows = row.querySelectorAll('.fas');
-        arrows.forEach(arrow => {
-        arrow.remove();
+        saveButton.style.display = 'none';
+        resetButton.style.display = 'none';
+        editButton.style.display = 'flex';
+        checkBox.style.display='none';
+    
+        console.log("saving");
+    
+        // Example: Retrieve data from input fields and perform save operation
+        const rows = leaderboardTableBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const lastCell = row.querySelector('td:last-child');
+            const inputField = lastCell.querySelector('input');
+            lastCell.textContent = inputField.value; // Set last cell content to input value
+    
+            // Clear second to last and third to last cell content
+            const secondToLastCell = row.querySelectorAll('td')[row.cells.length - 2];
+            const thirdToLastCell = row.querySelectorAll('td')[row.cells.length - 3];
+            secondToLastCell.textContent = secondToLastCell.textContent; // Maintain existing content
+            thirdToLastCell.textContent = thirdToLastCell.textContent; // Maintain existing content
+    
+            // Remove the arrows
+            const arrows = row.querySelectorAll('.fas');
+            arrows.forEach(arrow => {
+            arrow.remove();
+            });
         });
-      });
-  
-      //add a week button for the week
-      addWeekButton();
-      loadWeekButtons();
-  
-      //save the weekPointer
-      saveDataToStorage('weekPointer', weekPointer);
-  
-      checkInputPositive();
-  
-      //update and sort the table
-      updateTeamDataFromTable();
-      insertionSort();
-      updateCurrentWeekTeamData();
-      updateLeaderboard();
+    
+        //add a week button for the week
+        addWeekButton();
+        loadWeekButtons();
+    
+        //save the weekPointer
+        saveDataToStorage('weekPointer', weekPointer);
+    
+        checkInputPositive();
+    
+        //update and sort the table
+        updateTeamDataFromTable();
+        insertionSort();
+        updateCurrentWeekTeamData();
+        updateLeaderboard();
     });
   
     editButton.addEventListener('click', function() {
@@ -342,6 +344,7 @@ $(function() {
         editButton.style.display = 'none';
         resetButton.style.display = 'flex';
         saveButton.style.display = 'flex';
+        checkBox.style.display='flex';
         console.log("editing");
     
         //get the weekPointer from storage
@@ -425,6 +428,12 @@ $(function() {
     //---------------------------------------week board action listener--------------------------
     // Event listener for buttons within the week board
     weekBoard.addEventListener('click', function(event) {
+        // validate user is not changing week while editing the current data
+        if (saveButton.style.display === 'flex') {
+            // If the save is displayed, return without performing any action
+            alert("Cannot change week while editing.");
+            return;
+        }
         const clickedButton = event.target;
     
         // Check if the clicked element is a button

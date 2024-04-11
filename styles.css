@@ -10,50 +10,14 @@ body{
     overflow-x:hidden;
 }
 
-/*--------------------------------header styles-----------------------------*/
-header {
-    height:100px;
-    width:100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color:var(--sba-blue);
-    color:white;
-}
-.head-el{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    position:relative;
-    width:100%;
-}
-.head-el h1 {
-    position:absolute;
-    text-align: center;
-    font-size:300%;
-    font-weight:bold;
-    text-transform:uppercase;
-}
-.head-el a{
-    padding-left:90%;
-    font-size:25px;
-    text-decoration:none;
-    color:inherit;
-    font-weight:300;
-}
-.head-el a i:hover{
-    color:rgb(87, 86, 86);
-}
 /*-------------------------------teams section--------------------------------------------*/
-
 .teams{
     display:flex;
     justify-content:center;
     align-items:center;
     margin:0;
-    background-color:Black;
-    color:white;
+    background-color:white;
+    color:black;
     height:auto;
     padding:50px 0;
     width:100vw;
@@ -68,10 +32,10 @@ header {
 }
 .team-info p{
     padding:0 15% 15% 10%;
-    color:rgb(194, 193, 193);
+    color:rgb(109, 109, 109);
 }
-.to-white{
-    color:white;
+.to-blue{
+    color:var(--sba-blue);
     font-weight:bold;
 }
 
@@ -93,9 +57,6 @@ header {
   display: none;
   border-radius:20px;
 }
-.mySlides img{
-    border-radius:7px;
-  }
 
 /* Next & previous buttons */
 .prev, .next {
@@ -153,11 +114,11 @@ header {
 /* Fading animation */
 .fade {
   animation-name: fade;
-  animation-duration: 1.5s;
+  animation-duration: 3s;
 }
 
 @keyframes fade {
-  from {opacity: .6}
+  from {opacity: .8}
   to {opacity: 1}
 }
 /*---------------------------standings styles--------------------------------------*/
@@ -278,6 +239,26 @@ header {
 }
 
 /*------------------------------------------------editing----------------------------------------*/
+
+/* ---------new week check box--------- */
+.new-week-check{
+  border:none;
+  background-color:transparent;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+
+.new-week-check label{
+  font-size:18px;
+  margin-top:5px;
+}
+.new-week-check input{
+  height:20px;
+  width:20px;
+}
+
 .arrow-icons {
   display: flex;
   flex-direction: column;
