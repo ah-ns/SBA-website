@@ -14,21 +14,24 @@ $(function() {
     function saveDataToStorage(key, data) {
       localStorage.setItem(key, JSON.stringify(data));
     }
+
+    //all teams in order of preseason ranking
+    var preSznData = [
+        { name: "Mangione Miners", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Alonso's Aces", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Seton Seyboldos", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Green Peel Guardians", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Knott Nauticals", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Reitz Crackers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Campion Cavaliers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Rope Walkers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Nobles Knights", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Rofo Roughhousers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Claver Clams", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 }
+      ];
   
     // Sample leaderboard data
-    var teamData = getDataFromStorage('teamData') || [
-      { name: "Mangione Miners", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Alonso's Aces", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Seton Seyboldos", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Green Peel Guardians", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Knott Nauticals", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Reitz Crackers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Campion Cavaliers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Rope Walkers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Nobles Knights", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Rofo Roughhousers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-      { name: "Claver Clams", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 }
-    ];
+    var teamData = getDataFromStorage('teamData') || preSznData;
   
     //data for the weeks
     // Initialize weekData from localStorage or create an empty array if it doesn't exist
@@ -54,7 +57,8 @@ $(function() {
     //update in the current weeks data
     function updateCurrentWeekTeamData() {
         allTeamData[activeWeek - 1] = JSON.parse(JSON.stringify(teamData)); // Create a deep copy of teamData
-        
+        //console.log(allTeamData[activeWeek-1]); //testing to stop what is interfering with calcRankChange
+
         saveDataToStorage('allTeamData', allTeamData);
 
         //console statements
@@ -146,6 +150,28 @@ $(function() {
       }
   
       return false;
+    }
+
+    //calc the rank change compared to the week before
+    function calcRankChange() {
+        const thisWeekData = teamData;
+        const prevWeekData = allTeamData[activeWeek - 2] || preSznData;
+        
+        console.log(activeWeek);
+        // Find the change in rank between this week and last week and assign it to that team in 'teamData'
+        for (var i = 0; i < thisWeekData.length; i++) {
+            for (var j = 0; j < prevWeekData.length; j++) {
+                if (thisWeekData[i].name == prevWeekData[j].name) {
+                    var rChange = -1*(i - j);
+                    console.log(thisWeekData[i].name + " - " + prevWeekData[j].name + " - " + i + " " + j + " - " + rChange);
+                    for (var z = 0; z < teamData.length; z++) {
+                        if (thisWeekData[i].name == teamData[z].name) {
+                            teamData[z].rankChange = rChange;
+                        }
+                    }
+                }
+            }
+        }
     }
   
     // Function to update the leaderboard table
@@ -332,6 +358,10 @@ $(function() {
         //update and sort the table
         updateTeamDataFromTable();
         insertionSort();
+        //make sure rank change is compared to the prior week
+        calcRankChange();
+        //teamData[0].rankChange = 20;
+
         updateCurrentWeekTeamData();
         updateLeaderboard();
     });
