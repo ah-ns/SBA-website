@@ -54,9 +54,6 @@ $(function() {
     //update in the current weeks data
     function updateCurrentWeekTeamData() {
         allTeamData[activeWeek - 1] = JSON.parse(JSON.stringify(teamData)); // Create a deep copy of teamData
-        if(activeWeek>=2){
-            allTeamData[activeWeek-2]= allTeamData[activeWeek - 1];
-        }
         
         saveDataToStorage('allTeamData', allTeamData);
 
@@ -216,6 +213,7 @@ $(function() {
     const confBox = document.getElementById("confirmation-box");
     const weekBoard = document.getElementById('week-board');
     const checkBox = document.getElementById('new-week-check');
+    const aCheckBox = document.querySelector('#new-week-check input#weekCheckBox');
   
     //-----------------------------------Week Data---------------
     //saving and adding
@@ -319,8 +317,12 @@ $(function() {
         });
     
         //add a week button for the week
-        addWeekButton();
-        loadWeekButtons();
+        if(aCheckBox.checked){
+            addWeekButton();
+            loadWeekButtons();
+        }
+
+        aCheckBox.checked = false;
     
         //save the weekPointer
         saveDataToStorage('weekPointer', weekPointer);
@@ -496,6 +498,7 @@ $(function() {
   
       resetButton.style.display = "none";
       saveButton.style.display = "none";
+      checkBox.style.display='none';
     });
   
     //yes button on confirmation box
@@ -504,6 +507,7 @@ $(function() {
       saveButton.style.display = 'none';
       resetButton.style.display = 'none';
       editButton.style.display = 'flex';
+      checkBox.style.display='none';
   
       resetWeekButtons();
   
