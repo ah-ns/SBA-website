@@ -371,18 +371,43 @@ body{
 
 
 /* ---------------------RESPONSIVE DESIGN--------------------- */
-@media screen and (max-width: 700px) {
-  .head-el a{
-    padding-left:82%;
-  }
-
-  
+@media screen and (max-width: 795px) {
   .teams{
     flex-direction:column;
+    padding:25px 0;
   }
-
+  .team-info p{
+    padding:0 2% 4% 2%;
+  }
   .edit-btns{
     width:100%
+  }
+
+  /* the standings */
+  #leaderboardTable {
+    margin-top:12px;
+    font-size:13px;
+  }
+
+  #leaderboardTable th{
+    font-size:13px;
+  }
+
+  #leaderboardTableBody tr td:nth-child(2):not(:empty):only-child {
+    display: none;
+  }
+  #leaderboardTableBody tr td:nth-child(2){
+    margin:0 0 0 15%;
+    padding:0;
+  }
+  #leaderboardTableBody tr td:first-child{
+    padding:0;
+  }
+  #leaderboardTableBody tr td:nth-child(3){
+    padding-right:3px;
+  }
+  #leaderboardTableBody tr td:last-child{
+    padding-left:3px;
   }
 }
 
