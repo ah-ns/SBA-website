@@ -15,19 +15,19 @@ $(function() {
       localStorage.setItem(key, JSON.stringify(data));
     }
 
-    //all teams in order of preseason ranking
+    //all teams in order of preseason ranking, index 0 best, index.length-1 worst
     var preSznData = [
-        { name: "Mangione Miners", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-        { name: "Alonso's Aces", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-        { name: "Seton Seyboldos", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-        { name: "Green Peel Guardians", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-        { name: "Knott Nauticals", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-        { name: "Reitz Crackers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-        { name: "Campion Cavaliers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-        { name: "Rope Walkers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-        { name: "Nobles Knights", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Claver Clams", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
         { name: "Rofo Roughhousers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
-        { name: "Claver Clams", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 }
+        { name: "Nobles Knights", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Rope Walkers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Campion Cavaliers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Reitz Crackers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Mangione Miners", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Knott Nauticals", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Green Peel Guardians", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Seton Seyboldos", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
+        { name: "Alonso's Aces", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 }
       ];
   
     // Sample leaderboard data
@@ -41,12 +41,7 @@ $(function() {
   
     //reset all the teams data to 0 wins, losses, and PA
     function resetTeamData() {
-      for (var i = 0; i < teamData.length; i++) {
-        teamData[i].wins = 0;
-        teamData[i].losses = 0;
-        teamData[i].pointsAllowed = 0;
-        teamData[i].rankChange = 0;
-      }
+      teamData = preSznData;
       saveDataToStorage('teamData', teamData); // Save updated data to local storage
     }
 
@@ -89,7 +84,7 @@ $(function() {
 
     //------------------------------end of expiremental team data section------------------------------------------------------
   
-    //updates the teamData based on what is now in the website
+    //updates the teamData based on what is now in the website, using JQuery
     function updateTeamDataFromTable() {
       var rows = $("#leaderboardTableBody").find("tr");
       for (var i = 0; i < rows.length; i++) {
@@ -97,7 +92,19 @@ $(function() {
         
         teamData[i].wins = parseInt($(cells[2]).text());
         teamData[i].losses = parseInt($(cells[3]).text());
-        teamData[i].pointsAllowed = parseInt($(cells[4]).text());
+
+        //check if it is not an integer that was entered in points against
+        var integerValue = parseInt($(cells[4]).text());
+
+        if (!isNaN(integerValue) && Number.isInteger(integerValue)) { //can still type in negative num as user, obvious error for them to see
+            // it is a valid integer entry 
+            console.log("Cell contains an integer:", integerValue);
+            teamData[i].pointsAllowed = integerValue;
+        } else {
+            //Not valid entry, goes back to what it was before editing!
+            console.log("Cell does not contain an integer");
+            alert($(cells[1]).text()+" has an INVALID points against\nDouble Check + re-enter integer!");
+        }
       }
       saveDataToStorage('teamData', teamData); // Save updated data to local storage
     }
@@ -118,9 +125,6 @@ $(function() {
         teamData[j + 1] = temp;
       }
   
-      for (let i = 0; i < teamData.length; i++) {
-        teamData[i].rankChange = initialRanks[teamData[i].name] - (i + 1);
-      }
       saveDataToStorage('teamData', teamData); // Save updated data to local storage
     }
   
@@ -154,8 +158,11 @@ $(function() {
 
     //calc the rank change compared to the week before
     function calcRankChange() {
+        if(activeWeek == 1){
+          return;
+        }
         const thisWeekData = teamData;
-        const prevWeekData = allTeamData[activeWeek - 2] || preSznData;
+        const prevWeekData = activeWeek==1?preSznData :allTeamData[activeWeek - 2];
         
         console.log(activeWeek);
         // Find the change in rank between this week and last week and assign it to that team in 'teamData'
