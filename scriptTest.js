@@ -16,7 +16,10 @@ $(function() {
     }
 
     //all teams in order of preseason ranking, index 0 best, index.length-1 worst
-    var preSznData = [
+    var preSznData;
+    initiatePreSzn();
+    function initiatePreSzn(){
+      preSznData = [
         { name: "Claver Clams", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
         { name: "Rofo Roughhousers", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
         { name: "Nobles Knights", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
@@ -29,6 +32,8 @@ $(function() {
         { name: "Seton Seyboldos", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 },
         { name: "Alonso's Aces", wins: 0, losses: 0, pointsAllowed: 0, rankChange: 0 }
       ];
+    }
+    
   
     // Sample leaderboard data
     var teamData = getDataFromStorage('teamData') || preSznData;
@@ -158,11 +163,12 @@ $(function() {
 
     //calc the rank change compared to the week before
     function calcRankChange() {
-        if(activeWeek == 1){
-          return;
-        }
         const thisWeekData = teamData;
-        const prevWeekData = activeWeek==1?preSznData :allTeamData[activeWeek - 2];
+        if(activeWeek==1){//make sure preSzn data is initiated before page reload just incase
+          initiatePreSzn();
+        }
+        
+        const prevWeekData = activeWeek==1 ?  preSznData : allTeamData[activeWeek - 2];
         
         console.log(activeWeek);
         // Find the change in rank between this week and last week and assign it to that team in 'teamData'
@@ -170,7 +176,7 @@ $(function() {
             for (var j = 0; j < prevWeekData.length; j++) {
                 if (thisWeekData[i].name == prevWeekData[j].name) {
                     var rChange = -1*(i - j);
-                    console.log(thisWeekData[i].name + " - " + prevWeekData[j].name + " - " + i + " " + j + " - " + rChange);
+                    //console.log(thisWeekData[i].name + " - " + prevWeekData[j].name + " - " + i + " " + j + " - " + rChange);
                     for (var z = 0; z < teamData.length; z++) {
                         if (thisWeekData[i].name == teamData[z].name) {
                             teamData[z].rankChange = rChange;
@@ -179,6 +185,7 @@ $(function() {
                 }
             }
         }
+
     }
   
     // Function to update the leaderboard table
