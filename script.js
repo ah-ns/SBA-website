@@ -565,6 +565,7 @@ $(function() {
       confBox.style.display = "none";
       resetButton.style.display = "flex";
       saveButton.style.display = "flex";
+      checkBox.style.display='flex';
     });
   
   });//end everything
